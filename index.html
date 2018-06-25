@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Favorite Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+<div class="container">
+    <h2>Basic Table</h2>
+
+    <input type="text" name="movieName"  id="movieName">
+    <button class="clickMeButton">Submit!!</button>
+<br><hr><br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Movie Name</th>
+            <th scope="col">Year</th>
+            <th scope="col">Actors</th>
+        </tr>
+        </thead>
+        <tbody class="tableData">
+        <!-- Insert movie rows here -->
+
+        </tbody>
+    </table>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    // The below code fills in the first row of the table
+
+
+
+
+
+    $(".clickMeButton").on("click", function() {
+
+        var movieNameInput = document.getElementById("movieName").value;
+        var queryURL = "https://www.omdbapi.com/?t=" + movieNameInput + "&y=&plot=short&apikey=trilogy";
+        console.log(movieNameInput);
+        console.log(queryURL);
+
+
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+
+            console.log(response);
+
+          if(response  !== 'false'){
+              var titleContent = "<td>" + response.Title + "</td>";
+              var yearContent = "<td>" + response.Year + "</td>";
+              var actorsContent = "<td>" + response.Actors + "</td>";
+              $(".tableData").append("<tr>" + titleContent + yearContent + actorsContent + "</tr>");
+          }
+          else if(response === 'false'){
+              $(".tableData").append("<tr><td>" + response.Error+ "</td></tr>");
+
+          }
+
+
+        }).catch(function(error){
+            console.log('error',error);
+        });
+    });
+
+    // Repeat the above logic to add rows for two more movies of your choice
+
+    // BONUS: Once complete, try to make your code as DRY as possible through the use of functions
+</script>
+</body>
+
+</html>
